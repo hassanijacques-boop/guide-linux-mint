@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installer Linux Mint — Guide Jacques</title>
+<style>
+  :root{
+    --vert:#18794e; --vert-bg:#e7f6ee;
+    --rouge:#b42318; --rouge-bg:#fee4e2;
+    --bleu:#1849a9; --bleu-bg:#e8effb;
+    --or:#b54708; --or-bg:#fef0c7;
+    --encre:#101828; --gris:#475467; --bord:#d0d5dd;
+    --fond:#f8fafc;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--fond); color:var(--encre);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; font-size:17px;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:20px 16px 80px}
+  header{
+    background:linear-gradient(135deg,#0f766e 0%,#0e7490 55%,#1e40af 100%);
+    color:#fff;padding:34px 22px 30px;border-radius:0 0 22px 22px;
+    box-shadow:0 6px 22px rgba(16,24,40,.16);
+  }
+  header .kicker{text-transform:uppercase;letter-spacing:.14em;font-size:12px;opacity:.85;font-weight:700}
+  header h1{margin:8px 0 6px;font-size:30px;line-height:1.2}
+  header p{margin:0;opacity:.95;font-size:16px}
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:5px 11px;border-radius:999px;font-size:13px;font-weight:600}
+  h2{font-size:22px;margin:0 0 6px;line-height:1.25}
+  .step{
+    background:#fff;border:1px solid var(--bord);border-radius:16px;
+    padding:20px 18px;margin:16px 0;box-shadow:0 1px 3px rgba(16,24,40,.06);
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  .step .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:50%;background:#0e7490;color:#fff;
+    font-weight:800;font-size:18px;margin-right:10px;flex:0 0 38px;
+  }
+  .step-head{display:flex;align-items:center;gap:2px;margin-bottom:10px}
+  .step p{margin:8px 0}
+  .step ul,.step ol{margin:8px 0;padding-left:22px}
+  .step li{margin:6px 0}
+  .box{border-radius:12px;padding:14px 16px;margin:12px 0;border-left:5px solid;font-size:16px}
+  .danger{background:var(--rouge-bg);border-color:var(--rouge);color:#7a1a12}
+  .ok{background:var(--vert-bg);border-color:var(--vert);color:#0b5132}
+  .info{background:var(--bleu-bg);border-color:var(--bleu);color:#123a7d}
+  .warn{background:var(--or-bg);border-color:var(--or);color:#7a3d06}
+  .box strong{display:block;margin-bottom:4px;font-size:17px}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  pre{
+    background:#0d1117;color:#e6edf3;padding:14px 16px;border-radius:12px;
+    overflow-x:auto;font-size:15px;line-height:1.5;margin:12px 0;
+    white-space:pre-wrap;word-break:break-word;
+  }
+  code.inl{background:#eef2f6;border:1px solid #dbe2ea;border-radius:6px;padding:2px 6px;font-size:15px}
+  .btn{
+    display:block;text-align:center;background:#0e7490;color:#fff;text-decoration:none;
+    font-weight:700;padding:15px 18px;border-radius:12px;margin:12px 0;font-size:17px;
+    border-bottom:3px solid #0b5a70;word-break:break-word;
+  }
+  .btn.alt{background:#fff;color:#0e7490;border:2px solid #0e7490;border-bottom-width:4px}
+  .btn small{display:block;font-weight:500;font-size:13px;opacity:.9;margin-top:2px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15.5px}
+  th,td{border:1px solid var(--bord);padding:9px 10px;text-align:left;vertical-align:top}
+  th{background:#eef4f8;font-weight:700}
+  .chk{list-style:none;padding-left:0}
+  .chk li{padding-left:30px;position:relative;margin:9px 0}
+  .chk li:before{
+    content:"";position:absolute;left:0;top:3px;width:19px;height:19px;
+    border:2px solid #98a2b3;border-radius:5px;
+  }
+  .big{font-size:19px;font-weight:700}
+  .muted{color:var(--gris);font-size:15px}
+  .stop{background:#fff;border:3px solid var(--rouge);border-radius:16px;padding:18px;margin:18px 0}
+  .stop h2{color:var(--rouge)}
+  footer{margin-top:30px;text-align:center;color:var(--gris);font-size:14px}
+  .kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:15.5px;margin:10px 0}
+  .kv b{color:var(--gris);font-weight:600}
+  @media print{
+    body{background:#fff;font-size:11.5pt}
+    header{border-radius:0;box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .step,.box,.stop,pre,table,.btn{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .btn{border:1px solid #0e7490}
+    a{color:#0e7490}
+    .noprint{display:none}
+  }
+  @media (max-width:520px){
+    header h1{font-size:25px}
+    .kv{grid-template-columns:1fr}
+    .kv b{margin-top:6px}
+    body{font-size:16.5px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Guide pas-à-pas · Jacques</div>
+  <h1>Installer Linux Mint 22.3 « Zena »</h1>
+  <p>Remplacer Windows sur le PC · sans rien perdre</p>
+  <div class="badge-row">
+    <span class="badge">⏱ ~1 h 30</span>
+    <span class="badge">💾 Clé USB 4 Go min.</span>
+    <span class="badge">Langue : français</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="box danger" style="margin-top:20px">
+    <strong>🛑 Lis ces 3 lignes avant de toucher à quoi que ce soit</strong>
+    On va <b>effacer Windows et tous les fichiers du disque</b> (Bureau, Documents, Images, Téléchargements, Vidéos).<br>
+    <b>Ce qui est protégé :</b> le disque <b>Y:</b> et tes <b>vidéos de formations achetées</b> — on n'y touche pas.<br>
+    <b>Ce que tu dois sauvegarder toi-même :</b> photos, papiers, dossiers de l'école, CV… sur un disque externe, une clé USB ou Google Drive. <b>Fais-le avant l'étape 5.</b>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">0</span><h2>Ce qu'il te faut</h2></div>
+    <ul class="chk">
+      <li><b>1 clé USB de 4 Go minimum</b> — elle sera complètement effacée (prends-en une vide ou dont tu n'as plus besoin).</li>
+      <li><b>Internet</b> pour télécharger 2,9 Go (le plus long de tout le guide).</li>
+      <li><b>Le PC branché sur secteur.</b></li>
+      <li><b>Ton téléphone</b> à côté, pour m'envoyer les photos d'écran.</li>
+      <li>Idéalement <b>un câble Ethernet</b> (ou ton téléphone en partage de connexion) au cas où le Wi-Fi ne serait pas reconnu.</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">1</span><h2>Télécharger Linux Mint</h2></div>
+    <p>Clique sur le bouton. Le fichier fait <b>2,88 Go</b> — lance-le maintenant, il télécharge pendant que tu lis la suite.</p>
+    <a class="btn" href="https://ftp.fau.de/mint/iso/stable/22.3/linuxmint-22.3-cinnamon-64bit.iso">⬇ Télécharger Linux Mint 22.3 Cinnamon<small>linuxmint-22.3-cinnamon-64bit.iso · 2,88 Go · miroir officiel</small></a>
+    <p class="muted">Le fichier arrive dans le dossier <b>Téléchargements</b>. Ne le renomme pas, ne le décompresse pas.</p>
+    <div class="box info">
+      <strong>Si le téléchargement est trop lent</strong>
+      Essaie un autre miroir officiel :<br>
+      <a href="https://ftp.nluug.nl/os/Linux/distr/linuxmint/iso/stable/22.3/linuxmint-22.3-cinnamon-64bit.iso">miroir Pays-Bas</a> ·
+      <a href="https://mirrors.iu13.net/linuxmint/iso/stable/22.3/linuxmint-22.3-cinnamon-64bit.iso">miroir USA</a> ·
+      <a href="https://linuxmint.com/edition.php?id=326">page officielle</a>
+    </div>
+    <div class="box ok">
+      <strong>Empreinte de sécurité (facultatif)</strong>
+      Le vrai fichier a cette empreinte SHA256 :<br>
+      <code class="inl" style="word-break:break-all">a081ab202cfda17f6924128dbd2de8b63518ac0531bcfe3f1a1b88097c459bd4</code>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">2</span><h2>Télécharger Rufus (le graveur de clé USB)</h2></div>
+    <p>Rufus est un petit programme gratuit qui met Linux sur la clé USB. Pas d'installation : il s'ouvre tout seul.</p>
+    <a class="btn alt" href="https://github.com/pbatard/rufus/releases/download/v4.15/rufus-4.15.exe">⬇ Télécharger Rufus 4.15<small>Site officiel de l'auteur (GitHub) · rufus-4.15.exe</small></a>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">3</span><h2>Graver la clé USB (3 clics)</h2></div>
+    <ol>
+      <li><b>Branche la clé USB.</b></li>
+      <li><b>Double-clic sur <code class="inl">rufus-4.15.exe</code></b> → une fenêtre s'ouvre.<br>
+      <span class="muted">Si Windows demande l'autorisation : clique <b>Oui</b>.</span></li>
+      <li>En haut, <b>« Périphérique »</b> : vérifie que c'est bien <b>ta clé USB</b> (regarde la taille, ex. 8 Go). <b>⚠️ Rufus va effacer ce disque — c'est la clé, jamais le disque dur.</b></li>
+      <li>Sur <b>« Sélection de l'image »</b> → <b>SÉLECTION</b> → choisis le fichier <code class="inl">linuxmint-22.3-cinnamon-64bit.iso</code> dans Téléchargements.</li>
+      <li>Laisse tout le reste tel quel. Vérifie juste :<br>
+        <b>Schéma de partition</b> = <b>GPT</b> · <b>Système de destination</b> = <b>UEFI (non CSM)</b> · <b>Système de fichiers</b> = <b>FAT32</b></li>
+      <li>Clique <b>DÉMARRER</b>.</li>
+      <li>Si une fenêtre « Mode image ISO / DD » s'ouvre → choisis <b>« Écrire en mode image ISO (recommandé) »</b> → <b>OK</b>.</li>
+      <li>Confirme l'effacement de la clé → attends la fin (2 à 10 min) → <b>FERMER</b>.</li>
+    </ol>
+    <div class="box warn">
+      <strong>Le piège à éviter</strong>
+      Si Rufus demande « télécharger un fichier supplémentaire » (ex. ldlinux), clique <b>Oui</b> : c'est normal.
+      En revanche, si dans « Périphérique » tu ne vois <b>pas</b> ta clé mais un disque de 500 Go → <b>STOP, tu t'es trompé de disque</b>, ferme Rufus et rebranche la clé.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">4</span><h2>Noter ta clé Windows (5 minutes, utile plus tard)</h2></div>
+    <p>On efface Windows, mais la clé de licence reste dans la machine. Autant la garder écrite quelque part :</p>
+    <ol>
+      <li>Clique sur <b>Démarrer</b>, tape <code class="inl">powershell</code>, ouvre <b>Windows PowerShell</b>.</li>
+      <li>Copie-colle cette ligne et appuie sur Entrée :</li>
+    </ol>
+    <pre>(Get-CimInstance SoftwareLicensingService).OA3xOriginalProductKey</pre>
+    <p>Si une suite de 25 caractères s'affiche (ex. <code class="inl">XXXXX-XXXXX-XXXXX-XXXXX-XXXXX</code>), <b>envoie-la moi par message</b> ou note-la sur un papier. Si rien ne s'affiche, ce n'est pas grave : passe à la suite.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">5</span><h2>Sauvegarder tes fichiers personnels</h2></div>
+    <ul class="chk">
+      <li>Bureau, Documents, Images, Téléchargements, Vidéos personnelles</li>
+      <li>Photos et vidéos de famille</li>
+      <li>Dossiers de l'école, fiches, préparations, LSU</li>
+      <li>CV, papiers administratifs (impôts, CAF, MSA, assurances)</li>
+      <li>Favoris / mots de passe du navigateur (si tu y tiens)</li>
+    </ul>
+    <div class="box danger">
+      <strong>Le disque Y: n'est PAS une sauvegarde</strong>
+      On le garde intact, mais si le disque tombe en panne tout part avec. Copie au moins tes <b>photos et papiers</b> sur un disque externe ou dans Google Drive. <b>C'est la seule étape vraiment irréversible.</b>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">6</span><h2>Démarrer le PC sur la clé USB</h2></div>
+    <ol>
+      <li>Garde la clé USB branchée. <b>Redémarre</b> le PC (Démarrer → Redémarrer, pas « Arrêter »).</li>
+      <li>Dès que l'écran s'éteint puis se rallume, <b>tapote plusieurs fois la touche <code class="inl">F12</code></b>.<br>
+      <span class="muted">Ton clavier est un QWERTY externe : sur certains PC il faut <b>Fn + F12</b>. Sinon essaie <b>F10</b>, <b>F11</b> ou <b>Échap (Esc)</b>. La bonne touche est souvent écrite en bas de l'écran au démarrage.</span></li>
+      <li>Un menu « Boot » s'ouvre → choisis la ligne <b>USB</b> / <b>UEFI: nom de ta clé</b> → <b>Entrée</b>.</li>
+      <li>Un menu noir apparaît avec <b>« Start Linux Mint »</b> → appuie sur <b>Entrée</b> (ou attends 10 secondes).</li>
+      <li>Linux Mint démarre <b>sans rien installer</b>. Tu arrives sur un bureau avec une icône <b>« Installer Linux Mint »</b>.</li>
+    </ol>
+    <div class="box warn">
+      <strong>Si le PC démarre sur Windows comme d'habitude</strong>
+      Le menu de démarrage ne s'est pas ouvert. Éteins le PC, rallume et retape <code class="inl">Fn + F12</code> plus vite, dès le premier logo. Si ça refuse encore, dis-le-moi : on passera par le réglage de l'ordre de démarrage dans le BIOS.
+    </div>
+    <div class="box warn">
+      <strong>Si un message rouge « Security Violation » apparaît</strong>
+      C'est le <b>Secure Boot</b>. Note le message et envoie-moi une photo : on le désactivera dans le BIOS (menu <i>Security</i> → <i>Secure Boot</i> → <i>Disabled</i>).
+    </div>
+  </div>
+
+  <div class="stop">
+    <h2>7 · ⛔ Point de contrôle — NE PAS INSTALLER TOUT DE SUITE</h2>
+    <p class="big">C'est ici que tout se joue. On vérifie ensemble où sont tes vidéos avant d'effacer quoi que ce soit.</p>
+    <p>Sur le bureau Linux Mint, fais ceci :</p>
+    <ol>
+      <li>Ouvre un terminal : <b>Ctrl + Alt + T</b> (ou menu → Terminal).</li>
+      <li>Tape exactement cette ligne, puis Entrée :</li>
+    </ol>
+    <pre>lsblk -o NAME,SIZE,FSTYPE,LABEL</pre>
+    <ol start="3">
+      <li><b>Prends une photo de l'écran avec ton téléphone et envoie-la moi.</b></li>
+      <li>J'te réponds avec la liste exacte : ce qu'on <b>garde</b> (la partition de tes vidéos + le démarrage) et ce qu'on <b>supprime</b> (Windows).</li>
+    </ol>
+    <p class="muted">Je te dirai aussi combien d'espace libre tu auras pour Linux. Tant que je n'ai pas vu cette photo : <b>tu ne cliques nulle part</b>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">8</span><h2>Installer Linux Mint</h2></div>
+    <p>Une fois que je t'ai donné le feu vert, double-clique sur <b>« Installer Linux Mint »</b> sur le bureau.</p>
+    <table>
+      <tr><th>Écran</th><th>Ce que tu choisis</th></tr>
+      <tr><td>Langue</td><td><b>Français</b></td></tr>
+      <tr><td>Clavier</td><td><b>Français</b> (ou QWERTY si tu préfères taper comme avant)</td></tr>
+      <tr><td>Multimédia</td><td>Coche les deux cases (MP3, vidéos) → <b>Continuer</b></td></tr>
+      <tr><td>Type d'installation</td><td><b>⚠️ « Autre chose »</b> — <b>PAS</b> « Effacer le disque » (ça effacerait tes vidéos)</td></tr>
+      <tr><td>Partitions</td><td>On les fait ensemble : envoie-moi une photo de cet écran, je te dicte les clics un par un</td></tr>
+      <tr><td>Fuseau horaire</td><td>Mayotte / Nairobi (ou France)</td></tr>
+      <tr><td>Compte</td><td>Ton prénom, un nom d'utilisateur simple, <b>et un mot de passe que tu retiens</b>. Coche « connexion automatique » si tu veux, et <b>note le mot de passe sur papier</b> : il servira à installer des logiciels.</td></tr>
+    </table>
+    <div class="box info">
+      <strong>Principe de ce qu'on va faire (pour que tu comprennes)</strong>
+      Le disque est découpé en « morceaux » (partitions). On va <b>garder</b> le morceau de démarrage et le morceau de tes vidéos, <b>supprimer</b> le morceau de Windows, et installer Linux dans l'espace libéré. C'est pour ça qu'on regarde avant d'agir.
+    </div>
+    <p>À la fin : <b>« Redémarrer maintenant »</b>. Quand l'écran le demande, <b>débranche la clé USB</b> et appuie sur Entrée.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">9</span><h2>Première fois sous Linux Mint</h2></div>
+    <ol>
+      <li>Connecte le Wi-Fi (icône en bas à droite).</li>
+      <li>Menu → <b>Mises à jour</b> → installe tout (peut prendre 15–30 min).</li>
+      <li>Menu → <b>Logithèque</b> → installe <b>VLC</b> (pour lire tes vidéos de formation) et <b>LibreOffice</b> (déjà installé : documents, tableur, présentations).</li>
+      <li>Tes vidéos sont dans le disque <b>Y:</b> → ouvre le <b>Gestionnaire de fichiers</b>, elles apparaissent dans la colonne de gauche (souvent « 195 GB Volume »). Double-clic sur une vidéo → elle s'ouvre avec VLC.</li>
+      <li>Menu → <b>Timeshift</b> → configure une sauvegarde du système (recommandé, 20 min).</li>
+    </ol>
+    <div class="box ok">
+      <strong>Tu es arrivé</strong>
+      Windows n'est plus là, tes vidéos sont toujours là, et le PC est plus rapide. Envoie-moi une photo de ton bureau : je vérifie que tout est propre et je te donne les 3 réglages à faire ensuite (langue, dossiers, polices).
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">?</span><h2>Si quelque chose se passe mal</h2></div>
+    <table>
+      <tr><th>Ce que tu vois</th><th>Quoi faire</th></tr>
+      <tr><td>Le PC démarre toujours sur Windows</td><td>Éteins, rallume, <code class="inl">Fn+F12</code> dès le premier logo. Sinon on passera par le BIOS.</td></tr>
+      <tr><td>« Security Violation » / Secure Boot</td><td>Photo + message. On désactivera Secure Boot.</td></tr>
+      <tr><td>Écran noir après « Start Linux Mint »</td><td>Redémarre, choisis <b>« Start Linux Mint (compatibility mode) »</b>.</td></tr>
+      <tr><td>Pas de Wi-Fi sous Linux</td><td>Branche un câble Ethernet ou ton téléphone en USB (partage de connexion). On installera le pilote après.</td></tr>
+      <tr><td>Le disque Y: n'apparaît plus</td><td><b>Ne panique pas et n'installe rien.</b> Photo de l'écran des partitions → on répare avant de continuer.</td></tr>
+      <tr><td>Tu as un doute, n'importe lequel</td><td><b>Tu t'arrêtes et tu m'écris.</b> Rien n'est urgent : une mauvaise manipulation peut tout effacer, un message ne coûte rien.</td></tr>
+    </table>
+  </div>
+
+  <div class="box info">
+    <strong>Les 4 règles d'or</strong>
+    1. On ne clique jamais « Effacer le disque ». — 2. On vérifie avec la photo avant chaque étape qui modifie le disque. — 3. La clé USB sera effacée, le disque dur ne l'est pas (sauf si on le décide). — 4. En cas de doute : stop, message.
+  </div>
+
+  <footer>
+    Guide Linux Mint 22.3 « Zena » · préparé pour Jacques HASSANI MOUSTOIFA<br>
+    Liens officiels : linuxmint.com · github.com/pbatard/rufus
+  </footer>
+</div>
+</body>
+</html>
